@@ -28,7 +28,7 @@ namespace Reactive.Tweets
             var tweetSource = Source.ActorRef<ITweet>(100, OverflowStrategy.DropHead);
             var formatFlow = Flow.Create<ITweet>().Select(FormatTweet);
             var writeSink = Sink.ForEach<string>(Console.WriteLine);
-            var countAutors = Flow.Create<ITweet>()
+            var countauthors = Flow.Create<ITweet>()
                 .StatefulSelectMany(() =>
                 {
                     var dict = new Dictionary<string, int>();
@@ -45,7 +45,7 @@ namespace Reactive.Tweets
                     return result;
                 });
 
-            var graph = GraphDsl.Create(countAutors, writeSink, (notUsed, _) => notUsed, (b, count, write) =>
+            var graph = GraphDsl.Create(countauthors, writeSink, (notUsed, _) => notUsed, (b, count, write) =>
             {
                 var broadcast = b.Add(new Broadcast<ITweet>(2));
                 var output = b.From(broadcast.Out(0)).Via(formatFlow);
